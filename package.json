@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/samuelpauloantonio/robo-youtube#readme",
   "dependencies": {
-    "readline-sync": "^1.4.10"
+    "axios": "^0.23.0",
+    "readline-sync": "^1.4.10",
+    "sbd": "^1.0.19"
   }
 }
