@@ -3,6 +3,8 @@
 const axios  = require('axios')
 const senteceBoundaryDetection = require('sbd')
 const watsonKey = require('../credentials/watson.json').apikey
+const state = require('./state.js')
+
 
 const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
 const { IamAuthenticator } = require('ibm-watson/auth');
@@ -18,28 +20,29 @@ const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 
 
 
-
-
-
-
-
-async function rebot(content) {
+async function rebot() {
 	try {
+
+		const content = state.load()
+
 		await fetchContentFromWikipedia(content)
 		sanitizeContent(content)
 		breakContentIntoSentences(content)
 		await fetchKeywordOfAllSentences(content)
-		console.log(content.sentences)
+
+		state.save(content)
+
 
 		async function fetchContentFromWikipedia(content) {
 
 			const {data} =  await axios({
 				method:'GET',
-				url :`https://pt.wikipedia.org/api/rest_v1/page/summary/${content.searchTerm}`
+				url :`https://en.wikipedia.org/api/rest_v1/page/summary/${content.searchTerm}`
 			})
 
 			content.sourceContentOriginal = data.extract
 		}
+
 		function sanitizeContent (content) {
 			const withoutBlankLinesAndMarkDown = removeBlankLinesAndMarkdown(content.sourceContentOriginal)
 
