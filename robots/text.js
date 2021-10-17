@@ -99,7 +99,7 @@ async function rebot() {
 			
 			const keywords = response.result.keywords.map(keyword => keyword.text)
 
-			resolve(...keywords)
+			resolve(keywords)
 		})
 		.catch(err => {
 			console.log('error: ', err);
